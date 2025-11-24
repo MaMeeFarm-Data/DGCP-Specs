@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://specs.dgcp.org/schema/dms-v1.0.0.json",
+  "title": "DGCP Metadata Standard v1.0.0",
+  "type": "object",
+
+  "required": [
+    "dms_version",
+    "proof_id",
+    "worker_id_public",
+    "signature",
+    "timestamp_utc",
+    "location_label",
+    "work_type",
+    "short_human_description",
+    "ipfs_cid_primary",
+    "git_repo_url",
+    "git_commit_sha256"
+  ],
+
+  "properties": {
+    "dms_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Canonical DMS version. Machine-Critical."
+    },
+
+    "proof_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier (UUID) for this Proof event."
+    },
+
+    "worker_id_public": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64,130}$",
+      "description": "Worker's public key used to verify the signature. Machine-Critical."
+    },
+
+    "signature": {
+      "type": "string",
+      "description": "Cryptographic signature of the metadata (excluding this field)."
+    },
+
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp in UTC (ISO 8601). Machine-Critical."
+    },
+
+    "timestamp_local": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Local timestamp with timezone offset (ISO 8601). Human-Interpretive."
+    },
+
+    "location_label": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Coarse, privacy-safe location label. No GPS coordinates allowed."
+    },
+
+    "work_type": {
+      "type": "string",
+      "description": "Human-defined work category (e.g., duck_care). Must follow DGCP vocabulary."
+    },
+
+    "short_human_description": {
+      "type": "string",
+      "maxLength": 256,
+      "description": "Worker-written 1–2 sentence description of the work performed."
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional contextual tags (weather, tools, environment)."
+    },
+
+    "ipfs_cid_primary": {
+      "type": "string",
+      "pattern": "^Qm[a-zA-Z0-9]{44}$|^b[a-zA-Z0-9]{58,}$",
+      "description": "Primary IPFS CID (v0 or v1). Machine-Critical."
+    },
+
+    "ipfs_cid_additional": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional secondary IPFS CIDs for additional evidence."
+    },
+
+    "git_repo_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of the DGCP GitHub repository that stores this metadata."
+    },
+
+    "git_commit_sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{40,64}$",
+      "description": "Git commit SHA256 hash linking to the immutable provenance record."
+    },
+
+    "ots_timestamp_ref": {
+      "type": "string",
+      "description": "Reference to the minimal DLT timestamp (e.g., OTS proof file or Bitcoin TXID)."
+    }
+  },
+
+  "additionalProperties": false
+}
